@@ -1,0 +1,26 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitBisectGUI", "GitBisectGUI\GitBisectGUI.csproj", "{10CD2302-2023-48A0-BA91-41041477758F}"
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Pakete", "Pakete.mdproj", "{F66CCAAB-F1FF-435D-8F5C-FC6A736B32CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10CD2302-2023-48A0-BA91-41041477758F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10CD2302-2023-48A0-BA91-41041477758F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10CD2302-2023-48A0-BA91-41041477758F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10CD2302-2023-48A0-BA91-41041477758F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66CCAAB-F1FF-435D-8F5C-FC6A736B32CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66CCAAB-F1FF-435D-8F5C-FC6A736B32CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = GitBisectGUI\GitBisectGUI.csproj
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F66CCAAB-F1FF-435D-8F5C-FC6A736B32CE}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package name="Binärdateien">
+          <Builder targetFile="..\..\..\..\Desktop\monobibiGUI\GitBisectGUI.zip" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="GitBisectGUI\GitBisectGUI.csproj" />
+            </ChildEntries>
+            <RootEntry path="GitBisectGUI.sln" id=":root:" />
+          </Builder>
+        </Package>
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+</Project>
