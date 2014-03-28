@@ -9,6 +9,8 @@
 *.suo
 *.user
 *.sln.docstates
+*.userprefs
+UpgradeLog.htm
 
 # Build results
 [Dd]ebug/

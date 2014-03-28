@@ -14,30 +14,41 @@ namespace GitBisectGUI
 {
     public partial class Form1 : Form
     {
-        private readonly string PATH = System.IO.Path.Combine(new string[] { Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Reisisoft", "bibi-gui" });
+        private enum Settings { FOLDER_ONDISK = 0, FOLDERR_INCLOUD, L10N, PATH_SOFFICE }
+        private readonly string PATH = "bibisetting";
         private readonly string FILENAME = "main.settings";
-        string[] settings = new string[] { "", "", "en" };
+        private string PATH_SOFFICE_EXE = System.IO.Path.Combine("instdir", "program", "soffice.exe");
+        private string[] settings = new string[] { "", "", "en", "" };
         enum settingsID { folderondisk = 0, fileincloud, lang };
         private bool loadSettings()
         {
             try
             {
-                settings = System.IO.File.ReadAllLines(System.IO.Path.Combine(PATH, FILENAME));
-                tb_ondisk.Text = settings[0];
-                tb_incloud.Text = settings[1];
-
+                List<String> list = new List<string>();
+                list.AddRange(System.IO.File.ReadAllLines(System.IO.Path.Combine(PATH, FILENAME)));
+                while (list.Count < settings.Length)
+                    list.Add("");
+                settings = list.ToArray();
+                tb_ondisk.Text = settings[(int)Settings.FOLDER_ONDISK];
+                tb_incloud.Text = settings[(int)Settings.FOLDERR_INCLOUD];
+                if (settings[(int)Settings.PATH_SOFFICE].Length > "soffice".Length)
+                    PATH_SOFFICE_EXE = settings[(int)Settings.PATH_SOFFICE];
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageBox.Show(e.Message);
                 return false;
             }
-
+            /* foreach (String s in settings)
+                 MessageBox.Show(s + "\t" + s.Length);*/
+            this.Text = "Bibisect GUI - Soffice path:    " + PATH_SOFFICE_EXE;
             return true;
         }
         private void saveSettings(object sender, FormClosingEventArgs e)
         {
-            settings[0] = tb_ondisk.Text;
-            settings[1] = tb_incloud.Text;
+            settings[(int)Settings.FOLDER_ONDISK] = tb_ondisk.Text;
+            settings[(int)Settings.FOLDERR_INCLOUD] = tb_incloud.Text;
+            settings[(int)Settings.PATH_SOFFICE] = PATH_SOFFICE_EXE;
             try
             {
                 System.IO.Directory.CreateDirectory(PATH);
@@ -164,17 +175,17 @@ namespace GitBisectGUI
 
         private int doStep(ref BisectStep bss)
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
+            /* System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); // Time measurement
+             sw.Start();*/
             // Checkout
             git.Checkout(bss.getCommit(), CheckoutModifiers.Force, (path, completed, total) =>
             {
                 progressBar1.Value = total == 0 ? 100 : (int)((((float)completed) / total) * 100);
             }, null);
-            sw.Stop();
-            MessageBox.Show(sw.ElapsedMilliseconds / 1000f + "sec(" + bss.getCommit().Sha + ")");
+            /* sw.Stop();
+             MessageBox.Show(sw.ElapsedMilliseconds / 1000f + "sec(" + bss.getCommit().Sha + ")");*/
             System.Diagnostics.Process p = new System.Diagnostics.Process();
-            p.StartInfo = new System.Diagnostics.ProcessStartInfo(System.IO.Path.Combine(new string[] { tb_ondisk.Text, "instdir", "program", "soffice.exe" }));
+            p.StartInfo = new System.Diagnostics.ProcessStartInfo(System.IO.Path.Combine(new string[] { tb_ondisk.Text, PATH_SOFFICE_EXE }));
             if (System.IO.File.Exists(p.StartInfo.FileName))
                 p.Start();
             else
@@ -206,13 +217,17 @@ namespace GitBisectGUI
             output.Text = s + Environment.NewLine + output.Text;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void bcheckSettings_Click(object sender, EventArgs e)
         {
-
+            StringBuilder sb = new StringBuilder("The start binary would be this file:\n");
+            sb.AppendLine(System.IO.Path.Combine(tb_ondisk.Text, PATH_SOFFICE_EXE));
+            sb.AppendLine("If the path does not seems to be correct, is the following part correct?");
+            sb.AppendLine(settings[(int)Settings.FOLDER_ONDISK]);
+            sb.AppendLine("If no, please specify the folder using the" + b_searchRepo.Text + " button");
+            sb.AppendLine("Otherwise please close the program, open the settings file located at: " +System.IO.Path.Combine(PATH, FILENAME) + " and edit the lice with number " + ((int)Settings.PATH_SOFFICE));
+            sb.AppendLine("Please keep in mind, that the program has to be closed normally to safe the settings!");
+            MessageBox.Show(sb.ToString());
         }
-
-
-
 
     }
 }
