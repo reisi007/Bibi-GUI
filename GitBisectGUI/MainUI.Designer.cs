@@ -1,6 +1,6 @@
 ﻿namespace GitBisectGUI
 {
-    partial class Form1
+    partial class MainUI
     {
         /// <summary>
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainUI));
             this.b_searchRepo = new System.Windows.Forms.Button();
             this.b_start = new System.Windows.Forms.Button();
             this.tb_ondisk = new System.Windows.Forms.TextBox();
@@ -116,7 +117,7 @@
             this.bcheckSettings.UseVisualStyleBackColor = true;
             this.bcheckSettings.Click += new System.EventHandler(this.bcheckSettings_Click);
             // 
-            // Form1
+            // MainUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -129,8 +130,10 @@
             this.Controls.Add(this.tb_ondisk);
             this.Controls.Add(this.b_start);
             this.Controls.Add(this.b_searchRepo);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "MainUI";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "BiBi GUI - Binary search in git-repos";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.saveSettings);
             this.ResumeLayout(false);
             this.PerformLayout();

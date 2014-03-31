@@ -8,10 +8,13 @@
     <Packages>
       <Packages>
         <Package name="Binärdateien">
-          <Builder targetFile="..\..\..\..\Desktop\monobibiGUI\GitBisectGUI.zip" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
+          <Builder targetFile="..\..\Desktop\monobibiGUI\GitBisectGUI.zip" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
             <ChildEntries>
               <SolutionItemReference path="GitBisectGUI\GitBisectGUI.csproj" />
             </ChildEntries>
+            <ExcludedFiles>
+              <File>GitBisectGUI,ProgramFiles,GitBisectGUI.exe.config</File>
+            </ExcludedFiles>
             <RootEntry path="GitBisectGUI.sln" id=":root:" />
           </Builder>
         </Package>

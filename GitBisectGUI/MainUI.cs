@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace GitBisectGUI
 {
-    public partial class Form1 : Form
+    public partial class MainUI : Form
     {
         private enum Settings { FOLDER_ONDISK = 0, FOLDERR_INCLOUD, L10N, PATH_SOFFICE }
         private readonly string PATH = "bibisetting";
@@ -41,7 +41,6 @@ namespace GitBisectGUI
             }
             /* foreach (String s in settings)
                  MessageBox.Show(s + "\t" + s.Length);*/
-            this.Text = "Bibisect GUI - Soffice path:    " + PATH_SOFFICE_EXE;
             return true;
         }
         private void saveSettings(object sender, FormClosingEventArgs e)
@@ -59,7 +58,7 @@ namespace GitBisectGUI
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        public Form1()
+        public MainUI()
         {
             InitializeComponent();
             loadSettings();
@@ -85,7 +84,7 @@ namespace GitBisectGUI
                 bss.Add(new BisectStep(c));
             }
             steps = bss.ToArray();
-            MessageBox.Show("Total number of steps: " + Math.Round(Math.Log(steps.Length, 2), 0));
+            MessageBox.Show("Total number of steps: " +(2+ Math.Round(Math.Log(steps.Length, 2), 0)));
             /*
              * Bisecting starts here
              */
