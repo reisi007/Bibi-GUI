@@ -33,6 +33,20 @@ namespace GitBisectGUI
         { }
         public override string ToString()
         {
+            return (commit == null ? null : commit.Sha);
+        }
+        public override bool Equals(object obj)
+        {
+            return (obj != null && obj is BisectStep && commit.Equals(((BisectStep)obj).commit) && i == ((BisectStep)obj).i);
+        }
+        public override int GetHashCode()
+        {
+            if (commit == null)
+                return base.GetHashCode();
+            return commit.GetHashCode();
+        }
+        public string state()
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append("Commit: ");
             sb.Append(commit.Sha);

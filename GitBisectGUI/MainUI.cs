@@ -62,7 +62,20 @@ namespace GitBisectGUI
         {
             InitializeComponent();
             loadSettings();
+            updateDropdownList();
         }
+        private void updateDropdownList(){
+            // init repo
+            git = new Repository(tb_ondisk.Text);
+            List<BisectStep> bss = new List<BisectStep>();
+            StringBuilder sb = new StringBuilder();
+            ICommitLog commits = git.Branches["master"].Commits;
+            for(int i = commits.Count()-1; i >=0;i--)
+                bss.Add(new BisectStep(commits.ElementAt(i)));
+            steps = bss.ToArray();
+            cb_from.DataSource = bss;
+        }
+
         Repository git;
 
         private void b_searchRepo_Click(object sender, EventArgs e)
@@ -71,32 +84,32 @@ namespace GitBisectGUI
                 tb_ondisk.Text = fbd_repoOnDisk.SelectedPath;
         }
         BisectStep[] steps;
+
+        private int getArrayIndex(Object bisectStep)
+        {
+            for (int i = 0; i < steps.Length; i++)
+                if (steps[i].Equals(bisectStep))
+                    return i;
+            return -1;
+        }
+
         int LastKnownWorking = -1, FirstKnownNotWorking = -1;
         private void b_start_Click(object sender, EventArgs e)
         {
-            // init repo
-            git = new Repository(tb_ondisk.Text);
-            List<BisectStep> bss = new List<BisectStep>();
-            StringBuilder sb = new StringBuilder();
-            ICommitLog commits = git.Branches["master"].Commits;
-            foreach (Commit c in commits)
-            {
-                bss.Add(new BisectStep(c));
-            }
-            steps = bss.ToArray();
+            
             MessageBox.Show("Total number of steps: " +(2+ Math.Round(Math.Log(steps.Length, 2), 0)));
             /*
              * Bisecting starts here
              */
-            MessageBox.Show("OLDEST =" + steps[steps.Length - 1].getCommit().Message + "\nLATEST = " + steps[0].getCommit().Message);
+            MessageBox.Show("OLDEST =" + steps[0].getCommit().Message + "\n" + steps[0].getCommit().Sha + "\nLATEST = " + steps[steps.Length - 1].getCommit().Message + "\n" + steps[steps.Length - 1].getCommit().Sha);
             // Test oldest (Has to be GOOD)
-            int i = steps.Length;
+            int i = getArrayIndex(cb_from.SelectedItem);
             int r = BisectStep.Result.SKIP;
             try
             {
                 while (r == BisectStep.Result.SKIP || r == BisectStep.Result.NOTSET)
                 {
-                    i--;
+                    i++;
                     r = doStep(ref steps[i]);
                 }
             }
@@ -117,7 +130,7 @@ namespace GitBisectGUI
             {
                 while (r == BisectStep.Result.SKIP || r == BisectStep.Result.NOTSET)
                 {
-                    i++;
+                    i--;
                     r = doStep(ref steps[i]);
                 }
             }
@@ -159,7 +172,7 @@ namespace GitBisectGUI
             }
             next = lb + (og - lb) / 2;
             if (steps[next].getResult() == BisectStep.Result.SKIP)
-                next = lb + 1;
+                next = lb - 1;
             return true;
         }
         private bool isSKIPonly(int from, int to)
@@ -226,6 +239,19 @@ namespace GitBisectGUI
             sb.AppendLine("Otherwise please close the program, open the settings file located at: " +System.IO.Path.Combine(PATH, FILENAME) + " and edit the lice with number " + ((int)Settings.PATH_SOFFICE));
             sb.AppendLine("Please keep in mind, that the program has to be closed normally to safe the settings!");
             MessageBox.Show(sb.ToString());
+        }
+
+        private void cb_from_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cb_to.BeginUpdate();
+            int from = getArrayIndex(((ComboBox)sender).SelectedItem);
+            List<BisectStep> tmp = new List<BisectStep>();
+            for (int i = from + 1; i < steps.Length; i++)
+                tmp.Add(steps[i]);
+                cb_to.DataSource = tmp;
+                if (cb_to.SelectedIndex == 0)
+                    cb_to.SelectedIndex = tmp.Count - 1;
+            cb_to.EndUpdate();
         }
 
     }

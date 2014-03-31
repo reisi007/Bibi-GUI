@@ -38,6 +38,10 @@
             this.output = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.bcheckSettings = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cb_from = new System.Windows.Forms.ComboBox();
+            this.cb_to = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // b_searchRepo
@@ -93,7 +97,7 @@
             this.output.Location = new System.Drawing.Point(15, 100);
             this.output.Multiline = true;
             this.output.Name = "output";
-            this.output.Size = new System.Drawing.Size(500, 44);
+            this.output.Size = new System.Drawing.Size(690, 44);
             this.output.TabIndex = 6;
             // 
             // progressBar1
@@ -102,7 +106,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar1.Location = new System.Drawing.Point(12, 71);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(503, 23);
+            this.progressBar1.Size = new System.Drawing.Size(693, 23);
             this.progressBar1.Step = 1;
             this.progressBar1.TabIndex = 7;
             // 
@@ -117,11 +121,57 @@
             this.bcheckSettings.UseVisualStyleBackColor = true;
             this.bcheckSettings.Click += new System.EventHandler(this.bcheckSettings_Click);
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(512, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "From:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(512, 43);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "To:";
+            // 
+            // cb_from
+            // 
+            this.cb_from.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cb_from.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_from.DropDownWidth = 250;
+            this.cb_from.FormattingEnabled = true;
+            this.cb_from.Location = new System.Drawing.Point(551, 11);
+            this.cb_from.Name = "cb_from";
+            this.cb_from.Size = new System.Drawing.Size(144, 21);
+            this.cb_from.TabIndex = 11;
+            this.cb_from.SelectedIndexChanged += new System.EventHandler(this.cb_from_SelectedIndexChanged);
+            // 
+            // cb_to
+            // 
+            this.cb_to.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cb_to.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_to.DropDownWidth = 250;
+            this.cb_to.FormattingEnabled = true;
+            this.cb_to.Location = new System.Drawing.Point(551, 38);
+            this.cb_to.Name = "cb_to";
+            this.cb_to.Size = new System.Drawing.Size(144, 21);
+            this.cb_to.TabIndex = 12;
+            // 
             // MainUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(517, 156);
+            this.ClientSize = new System.Drawing.Size(707, 156);
+            this.Controls.Add(this.cb_to);
+            this.Controls.Add(this.cb_from);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.bcheckSettings);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.output);
@@ -151,6 +201,10 @@
         private System.Windows.Forms.TextBox output;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button bcheckSettings;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cb_from;
+        private System.Windows.Forms.ComboBox cb_to;
     }
 }
 
