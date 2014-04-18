@@ -72,6 +72,7 @@
             this.tb_ondisk.Name = "tb_ondisk";
             this.tb_ondisk.Size = new System.Drawing.Size(208, 20);
             this.tb_ondisk.TabIndex = 2;
+            this.tb_ondisk.Leave += new System.EventHandler(this.tb_ondisk_Leave);
             // 
             // tb_incloud
             // 

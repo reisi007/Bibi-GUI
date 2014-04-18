@@ -25,7 +25,7 @@ namespace GitBisectGUI
             try
             {
                 List<String> list = new List<string>();
-                list.AddRange(System.IO.File.ReadAllLines(System.IO.Path.Combine(PATH, FILENAME)));
+                list.AddRange(System.IO.File.ReadAllLines(System.IO.Path.Combine(Environment.CurrentDirectory, PATH, FILENAME)));
                 while (list.Count < settings.Length)
                     list.Add("");
                 settings = list.ToArray();
@@ -44,6 +44,10 @@ namespace GitBisectGUI
             return true;
         }
         private void saveSettings(object sender, FormClosingEventArgs e)
+        {
+            saveSettings();
+        }
+        private void saveSettings()
         {
             settings[(int)Settings.FOLDER_ONDISK] = tb_ondisk.Text;
             settings[(int)Settings.FOLDERR_INCLOUD] = tb_incloud.Text;
@@ -64,16 +68,25 @@ namespace GitBisectGUI
             loadSettings();
             updateDropdownList();
         }
-        private void updateDropdownList(){
+        private void updateDropdownList()
+        {
             // init repo
-            git = new Repository(tb_ondisk.Text);
-            List<BisectStep> bss = new List<BisectStep>();
-            StringBuilder sb = new StringBuilder();
-            ICommitLog commits = git.Branches["master"].Commits;
-            for(int i = commits.Count()-1; i >=0;i--)
-                bss.Add(new BisectStep(commits.ElementAt(i)));
-            steps = bss.ToArray();
-            cb_from.DataSource = bss;
+            if (tb_ondisk.Text.Length > 0)
+            {
+                git = new Repository(tb_ondisk.Text);
+                List<BisectStep> bss = new List<BisectStep>();
+                StringBuilder sb = new StringBuilder();
+                ICommitLog commits = git.Branches["master"].Commits;
+                for (int i = commits.Count() - 1; i >= 0; i--)
+                    bss.Add(new BisectStep(commits.ElementAt(i)));
+                steps = bss.ToArray();
+                cb_from.DataSource = bss;
+                cb_from.Enabled = cb_to.Enabled = b_start.Enabled = true;
+            }else
+            {
+                cb_from.Enabled = cb_to.Enabled = b_start.Enabled = false;
+            }
+
         }
 
         Repository git;
@@ -96,8 +109,11 @@ namespace GitBisectGUI
         int LastKnownWorking = -1, FirstKnownNotWorking = -1;
         private void b_start_Click(object sender, EventArgs e)
         {
-            
-            MessageBox.Show("Total number of steps: " +(2+ Math.Round(Math.Log(steps.Length, 2), 0)));
+            if (git == null)
+            {
+                MessageBox.Show("No repository specified!");
+            }
+            MessageBox.Show("Total number of steps: " + (2 + Math.Round(Math.Log(steps.Length, 2), 0)));
             /*
              * Bisecting starts here
              */
@@ -159,20 +175,20 @@ namespace GitBisectGUI
             else addOutputLine("An error occured. result not valid....");
 
         }
-        //og is oldest good lb is latest bad Oldest >> Latest
+        //og is oldest good lb is latest bad Oldest << Latest
         private bool nextStep(int og, int lb, out int next)
         {
             next = -1;
-            if (og < lb)
+            if (og > lb)
                 return false;
-            if (isSKIPonly(lb, og))
+            if (isSKIPonly(og, lb))
             {
                 next = 0;
                 return false;
             }
-            next = lb + (og - lb) / 2;
+            next = og + (lb - og) / 2;
             if (steps[next].getResult() == BisectStep.Result.SKIP)
-                next = lb - 1;
+                next = og + 1;
             return true;
         }
         private bool isSKIPonly(int from, int to)
@@ -231,13 +247,14 @@ namespace GitBisectGUI
 
         private void bcheckSettings_Click(object sender, EventArgs e)
         {
+            saveSettings();
             StringBuilder sb = new StringBuilder("The start binary would be this file:\n");
             sb.AppendLine(System.IO.Path.Combine(tb_ondisk.Text, PATH_SOFFICE_EXE));
             sb.AppendLine("If the path does not seems to be correct, is the following part correct?");
             sb.AppendLine(settings[(int)Settings.FOLDER_ONDISK]);
-            sb.AppendLine("If no, please specify the folder using the" + b_searchRepo.Text + " button");
-            sb.AppendLine("Otherwise please close the program, open the settings file located at: " +System.IO.Path.Combine(PATH, FILENAME) + " and edit the lice with number " + ((int)Settings.PATH_SOFFICE));
-            sb.AppendLine("Please keep in mind, that the program has to be closed normally to safe the settings!");
+            sb.AppendLine("If no, please specify the folder using the \"" + b_searchRepo.Text + "\" button");
+            sb.AppendLine("Otherwise please close the program, open the settings file located at: \"" + System.IO.Path.Combine(PATH, FILENAME) + "\" and edit the line with number " + ((int)Settings.PATH_SOFFICE));
+            sb.AppendLine("Please keep in mind, that the program saves the settings on close!");
             MessageBox.Show(sb.ToString());
         }
 
@@ -248,11 +265,17 @@ namespace GitBisectGUI
             List<BisectStep> tmp = new List<BisectStep>();
             for (int i = from + 1; i < steps.Length; i++)
                 tmp.Add(steps[i]);
-                cb_to.DataSource = tmp;
-                if (cb_to.SelectedIndex == 0)
-                    cb_to.SelectedIndex = tmp.Count - 1;
+            cb_to.DataSource = tmp;
+            if (cb_to.SelectedIndex == 0)
+                cb_to.SelectedIndex = tmp.Count - 1;
             cb_to.EndUpdate();
         }
+
+        private void tb_ondisk_Leave(object sender, EventArgs e)
+        {
+            updateDropdownList();
+        }
+
 
     }
 }
