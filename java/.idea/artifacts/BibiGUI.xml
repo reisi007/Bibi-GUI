@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BibiGUI">
+    <output-path>$USER_HOME$/Desktop/javaBibiGUI</output-path>
+    <root id="archive" name="Java.jar">
+      <element id="module-output" name="Java" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/org.eclipse.jgit-3.3.2.201404171909-r.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

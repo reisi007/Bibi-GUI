@@ -1,8 +1,10 @@
 package at.reisisoft.bibigui;
 
+import at.reisisoft.bibigui.ui.MainUI;
+
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        new MainUI().show();
     }
 }

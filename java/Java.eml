@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/Java"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="org.eclipse.jgit-3.3.2.201404171909-r-javadoc.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/org.eclipse.jgit-3.3.2.201404171909-r-javadoc.jar!/"/>
+	</lib>
+	<lib name="org.eclipse.jgit-3.3.2.201404171909-r.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/org.eclipse.jgit-3.3.2.201404171909-r.jar!/"/>
+	</lib>
+	<levels>
+		<level name="libs" value="project"/>
+	</levels>
+</component>
